@@ -3,11 +3,12 @@ const express = require("express");
 const axios = require("axios").default;
 
 const app = express();
-const port = 3000;
+const port = 3003;
 
 app.use(express.json());
 
-app.get("/", (req, res) => res.send(`
+app.get("/", (req, res) =>
+  res.send(`
   <html>
     <head><title>Success!</title></head>
     <body>
@@ -15,11 +16,14 @@ app.get("/", (req, res) => res.send(`
       <img src="https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif" alt="Cool kid doing thumbs up" />
     </body>
   </html>
-`));
+`)
+);
 
 app.post("/github", (req, res) => {
-  const content = ":wave: Hi mom!";
-  const avatarUrl = "https://media.giphy.com/media/3o7TKSjRrfIPjeiVyM/giphy.gif";
+  const content = `${req.body.repository.owner.login} just starred ${req.body.repository.name} :tada:`;
+  // ":wave: Hi mom!";
+  const avatarUrl = req.body.sender.avatar_url;
+  // "https://media.giphy.com/media/3o7TKSjRrfIPjeiVyM/giphy.gif";
   axios
     .post(process.env.DISCORD_WEBHOOK_URL, {
       content: content,
